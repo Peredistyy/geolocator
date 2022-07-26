@@ -1,5 +1,7 @@
-class GeolocationService
-  def add(ip)
+class AddGeoLocationHandler
+  def call(command)
+    ip = command.data[:ip]
+
     geo_data = data_provider.geo_data_by_ip(ip)
 
     geolocation = Geolocation.find_or_initialize_by(ip: ip)
@@ -15,10 +17,6 @@ class GeolocationService
     geolocation.save!
 
     geolocation
-  end
-
-  def remove(ip)
-    Geolocation.find_by(ip: ip)&.destroy
   end
 
   private

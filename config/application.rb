@@ -20,5 +20,14 @@ module Geolocator
     # config.eager_load_paths << Rails.root.join("extras")
 
     config.autoload_paths += ["#{config.root}/app/services/"]
+    config.autoload_paths += ["#{config.root}/app/commands/"]
+    config.autoload_paths += ["#{config.root}/app/command_handlers/"]
+
+    config.to_prepare do
+      Rails.configuration.event_store = event_store = RailsEventStore::Client.new
+
+      event_store.subscribe(AddGeoLocationHandler.new, to: [AddGeoLocationCommand])
+      event_store.subscribe(RemoveGeoLocationHandler.new, to: [RemoveGeoLocationCommand])
+    end
   end
 end
