@@ -3,9 +3,8 @@ module Locator
     include Extension::Authenticate
 
     resource :geolocations do
-      desc 'Get geolocation'
+      desc 'Get geolocation', headers: Geolocations::auth_headers
       params do
-        requires :token, type: String, desc: 'Token', documentation: { param_type: 'query' }
         requires :destination, type: String, desc: 'IP address or URL', documentation: { param_type: 'query' }
       end
       get serializer: GeolocationSerializer do
