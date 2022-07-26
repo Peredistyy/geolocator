@@ -22,9 +22,10 @@ feature 'Locator::Geolocations', type: :api do
     it 'success' do
       geolocation
 
+      page.driver.header('Auth-Token', token)
       page.driver.get(
         '/geolocations',
-        destination: ip, token: token
+        destination: ip
       )
 
       expect(page.status_code).to eq(200)
@@ -32,9 +33,10 @@ feature 'Locator::Geolocations', type: :api do
     end
 
     it 'success by wrong domain' do
+      page.driver.header('Auth-Token', token)
       page.driver.get(
         '/geolocations',
-        destination: 'http://ipstack.com/', token: token
+        destination: 'http://ipstack.com/'
       )
 
       expect(page.status_code).to eq(400)
@@ -42,9 +44,10 @@ feature 'Locator::Geolocations', type: :api do
     end
 
     it 'unauthorized' do
+      page.driver.header('Auth-Token', 'test')
       page.driver.get(
         '/geolocations',
-        destination: '31.129.66.251', token: 'test'
+        destination: '31.129.66.251'
       )
 
       expect(page.status_code).to eq(401)

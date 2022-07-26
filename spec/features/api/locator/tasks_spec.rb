@@ -6,9 +6,10 @@ feature 'Locator::Tasks', type: :api do
 
   describe 'create' do
     it 'success' do
+      page.driver.header('Auth-Token', token)
       page.driver.post(
         '/tasks',
-        destination: '31.129.66.251', action: 'add', token: token
+        destination: '31.129.66.251', action: 'add'
       )
 
       expect(page.status_code).to eq(201)
@@ -16,9 +17,10 @@ feature 'Locator::Tasks', type: :api do
     end
 
     it 'success by domain (ipstack.com)' do
+      page.driver.header('Auth-Token', token)
       page.driver.post(
         '/tasks',
-        destination: 'ipstack.com', action: 'add', token: token
+        destination: 'ipstack.com', action: 'add'
       )
 
       expect(page.status_code).to eq(201)
@@ -26,9 +28,10 @@ feature 'Locator::Tasks', type: :api do
     end
 
     it 'success by wrong domain' do
+      page.driver.header('Auth-Token', token)
       page.driver.post(
         '/tasks',
-        destination: 'http://ipstack.com/', action: 'add', token: token
+        destination: 'http://ipstack.com/', action: 'add'
       )
 
       expect(page.status_code).to eq(400)
@@ -36,9 +39,10 @@ feature 'Locator::Tasks', type: :api do
     end
 
     it 'unauthorized' do
+      page.driver.header('Auth-Token', 'test')
       page.driver.post(
         '/tasks',
-        destination: '31.129.66.251', action: 'add', token: 'test'
+        destination: '31.129.66.251', action: 'add'
       )
 
       expect(page.status_code).to eq(401)
