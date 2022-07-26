@@ -24,6 +24,6 @@ class GeolocationService
   private
 
   def data_provider
-    @data_provider ||= GeoDataProvider.new
+    Container['service.geo_data_provider']
   end
 end

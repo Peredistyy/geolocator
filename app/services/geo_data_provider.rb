@@ -10,6 +10,6 @@ class GeoDataProvider
   private
 
   def provider
-    Figaro.env.provider_type.constantize.new
+    Container[Figaro.env.provider_type]
   end
 end
