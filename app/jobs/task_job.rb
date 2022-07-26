@@ -15,6 +15,6 @@ class TaskJob < ActiveJob::Base
   private
 
   def service
-    @service ||= GeolocationService.new
+    Container['service.geolocation']
   end
 end

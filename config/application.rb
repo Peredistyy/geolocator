@@ -19,6 +19,7 @@ module Geolocator
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
 
+    config.autoload_paths += ["#{config.root}/app/injections/"]
     config.autoload_paths += ["#{config.root}/app/services/"]
   end
 end
