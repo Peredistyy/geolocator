@@ -1,6 +1,7 @@
 module Locator
   class Tasks < Grape::API
     include Extension::Authenticate
+    include Extension::EventStore
 
     resource :tasks do
       desc 'Create a task.'
@@ -22,7 +23,16 @@ module Locator
           error!('destination is not valid', 400)
         end
 
-        TaskJob.perform_later(ip, params[:action]) && { success: true }
+        case params[:action]
+        when :add
+          event_store.publish(AddGeoLocationCommand.new(data: { ip: ip }), stream_name: 'tasks')
+        when :remove
+          event_store.publish(RemoveGeoLocationCommand.new(data: { ip: ip }), stream_name: 'tasks')
+        else
+          error!("'#{params[:action]}' is a wrong action type.", 502)
+        end
+
+        { success: true }
       end
     end
   end
